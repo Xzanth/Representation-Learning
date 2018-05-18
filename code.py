@@ -7,8 +7,8 @@ import matplotlib.pyplot as plt
 
 def o_f(W):
     """ The objective function -log(p(Y|W))
-    The equation for this can be found in README.md with the full derivation
-    in derivations.pdf
+    The equation for this can be found in README.md with the full explanation
+    in equations.pdf
     """
 
     W = np.reshape(W, (D, 2))
@@ -25,8 +25,8 @@ def o_f(W):
 
 def o_dfx(W):
     """ Gradient of the objective function dL/dW
-    The equation for this can be found in README.md with the full derivation
-    in derivations.pdf
+    The equation for this can be found in README.md with the full explanation
+    in equations.pdf
     """
 
     W = np.reshape(W, (D, 2))
@@ -98,12 +98,12 @@ plt.figure(1)
 plt.scatter(x[:, 0], x[:, 1])
 plt.xlabel("$x_i \sin(x_i)$")
 plt.ylabel("$x_i \cos(x_i)$")
-plt.title("Original representation of $x$")
+plt.title("Original parameters X")
 
 plt.figure(2)
 plt.scatter(learned[:, 0], learned[:, 1])
 plt.xlabel("$x_i \sin(x_i)$")
 plt.ylabel("$x_i \cos(x_i)$")
-plt.title("Learned representation of $x$")
+plt.title("Learned X$^\prime$")
 
 plt.show()

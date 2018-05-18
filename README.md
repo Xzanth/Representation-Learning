@@ -25,22 +25,40 @@ function &#8466;(W).
 ###  Equations
 
 We use the following equations in our code, the terms are labelled as the
-variables are named in python. For derivations of these equations please
-consult `derivations.pdf` in this repository:
+variables are named in python. For an explanation of how I arrived at these
+equations please consult `equations.pdf` in this repository:
+
+#### The likelihood
+
+![Likelihood](images/likelihood.png)
 
 #### The objective function
 
 ![Objective Function](images/objective_function.png)
 
+where D is the number of dimensions.
+
 #### The derivative of the objective function
 
 ![Derivative Objective](images/derivative_objective.png)
+
+where **J**&#8305;&#690; is the single entry matrix with 1 at (i, j).
 
 ## Results
 
 ![All data sets](images/original.png)
 
 ![Subset data sets](images/learned.png)
+
+Our learned representation of **X** is very close to the correct shape, bar a
+small transformation of rotation and scale. This is because the marginal
+likelihood we are maximising is invariant to any matrix transformation whose
+inverse is its own transposition such as a rotation.
+
+We can see this by multiplying **W** in the likelihood by a transformation
+**R** such that **RR**&#7488; is the identity matrix:
+
+![Rotation Invariant](images/rotation_invariant.png)
 
 ### Prerequisites
 
