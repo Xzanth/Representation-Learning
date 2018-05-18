@@ -1,0 +1,41 @@
+%\begin{align*}
+%	\textbf{x} &= [0,\ldots,4\pi] \\
+%	\lvert\textbf{x}\rvert &= 100 \\
+%	f_{\text{non-lin}}(x_i) &= [x_i \sin(x_i), x_i \cos(x_i)] \\
+%	\textbf{x}^\prime &= f_\text{non-lin}(\textbf{x}) \\
+%	f_\text{lin}(x^\prime) &= \textbf{A}^\intercal\textbf{x}^\prime \\
+%	\textbf{A} &= \mathbb{R}^{10\mul2} \\
+%	\textbf{A}_{ij} &\sim \mathcal{N}(0,1) \\
+%	\textbf{Y} &= f_{\text{lin}}(\textbf{x}^\prime) \\
+%\end{align*}
+
+
+
+\begin{align*}
+f_\text{lin}(\textbf{X}) &= \textbf{X}\textbf{W}^\intercal \\
+\textbf{W} &= \mathbb{R}^{10\times2} \\
+\textbf{W}_{ij} &\sim \mathcal{N}(0,1) \\
+\textbf{Y} &= f_{\text{lin}}(\textbf{X}) \\
+\end{align*}
+
+\begin{align*}
+\textbf{x} &= [0,\ldots,4\pi] \\
+\lvert\textbf{x}\rvert &= 100 \\
+f(\textbf{x}) &= [x_i \sin(x_i), x_i \cos(x_i)] \\
+\textbf{X} &= f(\textbf{x})
+\end{align*}
+
+\begin{align*}
+\textbf{Y} &= \textbf{X}\textbf{W}^\intercal \\
+\textbf{W}^\prime &= \text{arg}\,\text{min}_\textbf{W}\ \mathcal{L}(\mathbf{W}) \\
+\textbf{X}^\prime &= \textbf{Y}\textbf{W}^\prime(\textbf{W}^{\prime\intercal}\textbf{W}^\prime)^{-1} \\
+\end{align*}
+
+\begin{align*}
+\mathcal{L}(\textbf{W}) &= \frac{N}{2}\bigg(\overbrace{\Tr\big((\textbf{W}\textbf{W}^T+\sigma^2\textbf{I})^{-1}\textbf{Y}\textbf{Y}^T\big)}^{A} + \overbrace{\log(\lvert\textbf{W}\textbf{W}^T+\sigma^2\textbf{I}\vert)}^{B} + \overbrace{D\log2\pi}^{C}\bigg)
+\end{align*}
+
+\begin{align*}
+\frac{\partial\mathcal{L}}{\partial\textbf{W}_{ij}} =\ &\frac{N}{2}\Bigg(\ \overbrace{\text{Tr}\Big[\textbf{Y}\big(-(\textbf{W}\textbf{W}^T+\sigma^2\textbf{I})^{-1}(\textbf{J}^{ij}\textbf{W}^T + \textbf{W}\textbf{J}^{ij}^T)(\textbf{W}\textbf{W}^T+\sigma^2\textbf{I})\big)\textbf{Y}^T\Big]}^{A} \\ 
+	&+ \overbrace{\text{Tr}\Big[(\textbf{W}\textbf{W}^T+\sigma^2\textbf{I})^{-1}(\textbf{J}^{ij}\textbf{W}^T + \textbf{W}\textbf{J}^{ij}^T)\Big]}^{B}\Bigg)
+\end{align*}

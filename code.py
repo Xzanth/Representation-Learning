@@ -5,8 +5,11 @@ import scipy.optimize as opt
 import matplotlib.pyplot as plt
 
 
-def f(W):
-    """ The objective function -log(p(Y|W)) """
+def o_f(W):
+    """ The objective function -log(p(Y|W))
+    The equation for this can be found in README.md with the full derivation
+    in derivations.pdf
+    """
 
     W = np.reshape(W, (D, 2))
     WWT = np.dot(W, np.transpose(W))
@@ -20,8 +23,11 @@ def f(W):
     return 0.5 * N * (A + B + C)
 
 
-def dfx(W):
-    """ Gradient of the objective function dL/dW """
+def o_dfx(W):
+    """ Gradient of the objective function dL/dW
+    The equation for this can be found in README.md with the full derivation
+    in derivations.pdf
+    """
 
     W = np.reshape(W, (D, 2))
     WWT = np.dot(W, np.transpose(W))
@@ -55,7 +61,7 @@ def dfx(W):
     return gradient
 
 
-def fnonlin(xlist):
+def f(xlist):
     return np.array([[x*np.sin(x), x*np.cos(x)] for x in xlist])
 
 
@@ -70,17 +76,17 @@ A = np.random.randn(20)
 A = A.reshape((D, 2))
 
 N = 100
-x = np.linspace(0, 4*np.pi, N)
-xprime = fnonlin(x)
+xsmall = np.linspace(0, 4*np.pi, N)
+x = f(xsmall)
 
-Y = flin(xprime, A)
+Y = flin(x, A)
 
-A = np.random.randn(20)
-A = np.reshape(A, (20,))
+W = np.random.randn(20)
+W = np.reshape(W, (20,))
 
 # Representation learning of X
 
-Wstar = opt.fmin_cg(f, A, fprime=dfx)   # Optimise using gradient descent
+Wstar = opt.fmin_cg(o_f, W, fprime=o_dfx)   # Optimise using gradient descent
 Wprime = np.reshape(Wstar, (10, 2))
 
 WTW = np.dot(np.transpose(Wprime), Wprime)
@@ -89,15 +95,15 @@ learned = np.dot(Y, np.dot(Wprime, np.linalg.inv(WTW)))
 # Graphical the results
 
 plt.figure(1)
-plt.scatter(xprime[:, 0], xprime[:, 1])
+plt.scatter(x[:, 0], x[:, 1])
 plt.xlabel("$x_i \sin(x_i)$")
 plt.ylabel("$x_i \cos(x_i)$")
-plt.title("Original representation of $X^\prime$")
+plt.title("Original representation of $x$")
 
 plt.figure(2)
 plt.scatter(learned[:, 0], learned[:, 1])
 plt.xlabel("$x_i \sin(x_i)$")
 plt.ylabel("$x_i \cos(x_i)$")
-plt.title("Learned representation of $X^\prime$")
+plt.title("Learned representation of $x$")
 
 plt.show()
