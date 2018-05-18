@@ -4,47 +4,73 @@ import numpy as np
 import scipy.optimize as opt
 import matplotlib.pyplot as plt
 
+
 def f(W):
-    W = np.reshape(W, (10,2))
-    WWT = np.dot(W,np.transpose(W))
-    I = np.eye(10)
-    A = np.trace(np.dot(np.dot(Y, np.linalg.inv(WWT + I)),np.transpose(Y)))
-    B = np.log(np.linalg.det(WWT + I))
-    C = 10*np.log(2*np.pi)
-    return 0.5*100*(A + B + C)
+    """ The objective function -log(p(Y|W)) """
+
+    W = np.reshape(W, (D, 2))
+    WWT = np.dot(W, np.transpose(W))
+
+    Id = np.eye(D)
+
+    A = np.trace(np.dot(np.dot(Y, np.linalg.inv(WWT + Id)), np.transpose(Y)))
+    B = np.log(np.linalg.det(WWT + Id))
+    C = D * np.log(2*np.pi)
+
+    return 0.5 * N * (A + B + C)
+
 
 def dfx(W):
-    W = np.reshape(W, (10,2))
-    WWT = np.dot(W,np.transpose(W))
-    I = np.eye(10)
-    prec = np.linalg.inv(WWT + I)
-    
-    gd = np.empty(W.shape)
-    for i in range(gd.shape[0]):
-        for j in range(gd.shape[1]):
-            J = np.zeros(np.shape(W))
-            J[i,j] = 1
-            JWWJ = np.dot(J,np.transpose(W)) + np.dot(W,np.transpose(J))
-            dprec = np.dot(np.dot(-prec, JWWJ), prec)
-            A = np.trace(np.dot(np.dot(Y,dprec), np.transpose(Y)))
-            B = np.trace(np.dot(prec, JWWJ))
-            gd[i,j] = 100*0.5*(A + B)
-    gd = np.reshape(gd,(20,))
-    return gd
+    """ Gradient of the objective function dL/dW """
 
-def fnonlin(x):
-    Y = np.zeros((100,2))
-    Y[:,0]= np.multiply(x,np.cos(x))
-    Y[:,1]= np.multiply(x,np.sin(x))
-    return Y
+    W = np.reshape(W, (D, 2))
+    WWT = np.dot(W, np.transpose(W))
+
+    Id = np.eye(D)
+
+    var = np.linalg.inv(WWT + Id)
+
+    gradient = np.empty(W.shape)
+
+    for i in range(W.shape[0]):
+        for j in range(W.shape[1]):
+
+            # Construct the single entry matrix
+            J = np.zeros(np.shape(W))
+            J[i, j] = 1
+
+            # Calculate the partial derivative of WW^T as JWWJ
+            JWWJ = np.dot(J, np.transpose(W)) + np.dot(W, np.transpose(J))
+
+            # Calculate the partial derivative of the inverse of the variance
+            d_inv_var = np.dot(np.dot(-var, JWWJ), var)
+
+            A = np.trace(np.dot(np.dot(Y, d_inv_var), np.transpose(Y)))
+            B = np.trace(np.dot(var, JWWJ))
+
+            gradient[i, j] = N * 0.5 * (A + B)
+
+    gradient = np.reshape(gradient, (20,))
+
+    return gradient
+
+
+def fnonlin(xlist):
+    return np.array([[x*np.sin(x), x*np.cos(x)] for x in xlist])
+
 
 def flin(x, A):
     return np.dot(x, np.transpose(A))
 
-A = np.random.randn(20)
-A = A.reshape((10,2))
 
-x = np.linspace(0,4*np.pi,100)
+# Generate our data
+
+D = 10
+A = np.random.randn(20)
+A = A.reshape((D, 2))
+
+N = 100
+x = np.linspace(0, 4*np.pi, N)
 xprime = fnonlin(x)
 
 Y = flin(xprime, A)
@@ -52,14 +78,26 @@ Y = flin(xprime, A)
 A = np.random.randn(20)
 A = np.reshape(A, (20,))
 
-prior = np.zeros(20)
-Wprime = opt.fmin_cg(f,A, fprime=dfx)
-Wprime = np.reshape(Wstar,(10,2))
-WTW = np.dot(np.transpose(W),W)
-learned = np.dot(Y, np.dot(W, np.linalg.inv(WTW))) 
+# Representation learning of X
+
+Wstar = opt.fmin_cg(f, A, fprime=dfx)   # Optimise using gradient descent
+Wprime = np.reshape(Wstar, (10, 2))
+
+WTW = np.dot(np.transpose(Wprime), Wprime)
+learned = np.dot(Y, np.dot(Wprime, np.linalg.inv(WTW)))
+
+# Graphical the results
 
 plt.figure(1)
-plt.scatter(learned[:,0],learned[:,1])
+plt.scatter(xprime[:, 0], xprime[:, 1])
+plt.xlabel("$x_i \sin(x_i)$")
+plt.ylabel("$x_i \cos(x_i)$")
+plt.title("Original representation of $X^\prime$")
+
 plt.figure(2)
-plt.scatter(xprime[:,0],xprime[:,1])
+plt.scatter(learned[:, 0], learned[:, 1])
+plt.xlabel("$x_i \sin(x_i)$")
+plt.ylabel("$x_i \cos(x_i)$")
+plt.title("Learned representation of $X^\prime$")
+
 plt.show()
