@@ -34,7 +34,8 @@ def o_dfx(W):
 
     Id = np.eye(D)
 
-    var = np.linalg.inv(WWT + Id)
+    # Inverse of the variance
+    inv_var = np.linalg.inv(WWT + Id)
 
     gradient = np.empty(W.shape)
 
@@ -49,10 +50,10 @@ def o_dfx(W):
             JWWJ = np.dot(J, np.transpose(W)) + np.dot(W, np.transpose(J))
 
             # Calculate the partial derivative of the inverse of the variance
-            d_inv_var = np.dot(np.dot(-var, JWWJ), var)
+            d_inv_var = np.dot(np.dot(-inv_var, JWWJ), inv_var)
 
             A = np.trace(np.dot(np.dot(np.transpose(Y), Y), d_inv_var))
-            B = np.trace(np.dot(var, JWWJ))
+            B = np.trace(np.dot(inv_var, JWWJ))
 
             gradient[i, j] = N * 0.5 * (A + B)
 
@@ -61,25 +62,23 @@ def o_dfx(W):
     return gradient
 
 
+# Generate our data
+
 def f(xlist):
     return np.array([[x*np.sin(x), x*np.cos(x)] for x in xlist])
 
 
-def flin(x, A):
-    return np.dot(x, np.transpose(A))
-
-
-# Generate our data
-
 D = 10
-A = np.random.randn(20)
-A = A.reshape((D, 2))
+W = np.random.randn(20)
+W = W.reshape((D, 2))
 
 N = 100
 xsmall = np.linspace(0, 4*np.pi, N)
 x = f(xsmall)
 
-Y = flin(x, A)
+Y = np.dot(x, np.transpose(W))
+
+# Reset W for gradient descent
 
 W = np.random.randn(20)
 W = np.reshape(W, (20,))
