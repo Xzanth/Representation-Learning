@@ -1,7 +1,7 @@
 # Representation Learning
 
-Unsupervised learning of the generating parameters of a linear model using
-gradient descent.
+Unsupervised learning of the generating parameters of a linear model using Type
+II Maximum Likelihood and gradient descent.
 
 ## Description
 
@@ -15,10 +15,10 @@ Where our parameter **X** is a 100&#215;2 matrix generated as such:
 ![Param](images/param_eqn.png)
 
 From only the output data **Y** we wish to learn the generating parameter
-**X**. We do this by finding the maximum likelihood estimate for **W** and
-reversing the linear mapping. We find the MLE by minimising the negative log
-likelihood using gradient descent. The negative log likelihood is our objective
-function &#8466;(**W**).
+**X**. We do this by finding the Type II Maximum Likelihood estimate for **W**
+and reversing the linear mapping. We find the MLE by minimising the negative
+log likelihood using gradient descent. The negative log likelihood is our
+objective function &#8466;(**W**).
 
 ![Arg Min](images/arg_min.png)
 
