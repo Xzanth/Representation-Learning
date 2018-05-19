@@ -28,7 +28,7 @@ f(\textbf{x}) &= [x_i \sin(x_i), x_i \cos(x_i)] \\
 
 % DERIVATIVE OF OBJECTIVE
 \begin{align*}
-\frac{\partial\mathcal{L}}{\partial\textbf{W}_{ij}} =\ &\frac{N}{2}\Bigg(\ \overbrace{\text{Tr}\Big[\textbf{Y}\big(-(\textbf{W}\textbf{W}^T+\sigma^2\textbf{I})^{-1}(\textbf{J}^{ij}\textbf{W}^T + \textbf{W}\textbf{J}^{ij}^T)(\textbf{W}\textbf{W}^T+\sigma^2\textbf{I})\big)\textbf{Y}^T\Big]}^{A} \\ 
+\frac{\partial\mathcal{L}}{\partial\textbf{W}_{ij}} =\ &\frac{N}{2}\Bigg(\ \overbrace{\text{Tr}\Big[\textbf{Y}^T\textbf{Y}\big(-(\textbf{W}\textbf{W}^T+\sigma^2\textbf{I})^{-1}(\textbf{J}^{ij}\textbf{W}^T + \textbf{W}\textbf{J}^{ij}^T)(\textbf{W}\textbf{W}^T+\sigma^2\textbf{I})\big)\Big]}^{A} \\ 
 	&+ \overbrace{\text{Tr}\Big[(\textbf{W}\textbf{W}^T+\sigma^2\textbf{I})^{-1}(\textbf{J}^{ij}\textbf{W}^T + \textbf{W}\textbf{J}^{ij}^T)\Big]}^{B}\Bigg)
 \end{align*}
 

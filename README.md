@@ -26,9 +26,9 @@ function &#8466;(W).
 
 We use the following equations in our code, the terms are labelled as the
 variables are named in python. For an explanation of how I arrived at these
-equations please consult `equations.pdf` in this repository:
+equations please refer to `equations.pdf` in this repository:
 
-#### The likelihood
+#### The marginal likelihood
 
 ![Likelihood](images/likelihood.png)
 

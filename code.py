@@ -51,7 +51,7 @@ def o_dfx(W):
             # Calculate the partial derivative of the inverse of the variance
             d_inv_var = np.dot(np.dot(-var, JWWJ), var)
 
-            A = np.trace(np.dot(np.dot(Y, d_inv_var), np.transpose(Y)))
+            A = np.trace(np.dot(np.dot(np.transpose(Y), Y), d_inv_var))
             B = np.trace(np.dot(var, JWWJ))
 
             gradient[i, j] = N * 0.5 * (A + B)
