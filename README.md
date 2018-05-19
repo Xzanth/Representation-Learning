@@ -52,8 +52,8 @@ where **J**&#8305;&#690; is the single entry matrix with 1 at (i, j).
 
 Our learned representation of **X** is very close to the correct shape, bar a
 small transformation of rotation and scale. This is because the marginal
-likelihood we are maximising is invariant to any matrix transformation whose
-inverse is its own transposition such as a rotation.
+likelihood we are maximising is invariant to orthogonal matrices, which are
+matrices whose inverse are their own transposition such as rotation.
 
 We can see this by multiplying **W** in the likelihood by a transformation
 **R** such that **RR**&#7488; is the identity matrix:
